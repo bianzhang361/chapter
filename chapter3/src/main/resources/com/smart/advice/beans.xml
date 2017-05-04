@@ -15,19 +15,32 @@
         p:proxyTargetClass="true"
         />-->
 
-    <bean id="greetingAround" class="com.smart.advice.GreetingInterceptor"/>
+    <!--<bean id="greetingAround" class="com.smart.advice.GreetingInterceptor"/>
     <bean id="target" class="com.smart.advice.NaiveWaiter"/>
     <bean id="waiter" class="org.springframework.aop.framework.ProxyFactoryBean"
         p:proxyInterfaces="com.smart.advice.Waiter"
         p:target-ref="target"
         p:interceptorNames="greetingAround"
-        />
+        />-->
 
-    <bean id="transactionManager" class="com.smart.advice.TransactionManager"/>
+    <!--<bean id="transactionManager" class="com.smart.advice.TransactionManager"/>
     <bean id="viewSpaceserviceTarget" class="com.smart.advice.ViewSpaceService"/>
     <bean id="viewSpaceService" class="org.springframework.aop.framework.ProxyFactoryBean"
         p:interceptorNames="transactionManager"
         p:target-ref="viewSpaceserviceTarget"
         p:proxyTargetClass="true"
-    />
+    />-->
+
+    <bean id="waiterTarget" class="com.smart.domain.Waiter"/>
+    <bean id="sellerTarget" class="com.smart.domain.Seller"/>
+    <bean id="greetingAdvice" class="com.smart.advice.GreetingBeforeAdvice"/>
+    <bean id="greetingAdvisor" class="com.smart.advice.GreetingAdvisor"
+        p:advice-ref="greetingAdvice"/>
+    <bean id="parent" abstract="true"
+        class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:interceptorNames="greetingAdvisor"
+        p:proxyTargetClass="true"
+        />
+    <bean id="waiter" parent="parent" p:target-ref="waiterTarget"/>
+    <bean id="seller" parent="parent" p:target-ref="sellerTarget"/>
 </beans>
