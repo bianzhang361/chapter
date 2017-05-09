@@ -34,13 +34,17 @@ public class ViewSpaceDao {
         final String sql = "INSERT INTO t_view_space " +
                 "(space_name,description,address) VALUES (?,?,?)";
 
-        Object[] params = new Object[] {viewSpace.getSpaceName(),
-                viewSpace.getDescription(),viewSpace.getAddress()};
+        /*Object[] params = new Object[] {viewSpace.getSpaceName(),
+                viewSpace.getDescription(),viewSpace.getAddress()};*/
 
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                return null;
+            public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, viewSpace.getSpaceName());
+                ps.setString(2, viewSpace.getDescription());
+                ps.setString(3, viewSpace.getAddress());
+                return ps;
             }
         });
     }
